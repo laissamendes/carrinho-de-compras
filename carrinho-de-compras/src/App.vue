@@ -41,10 +41,12 @@ function adicionar1(id) {
       preco: produtos_mari.value[id - 1].quantidade * produtos_mari.value[id - 1].preco
     })
 
-    carrinho.value.total =
-      carrinho.value.total +
-      produtos_mari.value[id - 1].preco * produtos_mari.value[id - 1].quantidade
+    calcularTotal()
   }
+}
+function resetar1(id) {
+if (produtos_mari.value[id - 1].quantidade > 0) {
+  produtos_mari.value[id - 1].quantidade = 0 }
 }
 const produtos_bt = ref([
   {
@@ -86,10 +88,12 @@ function adicionar2(id) {
       preco: produtos_bt.value[id - 1].quantidade * produtos_bt.value[id - 1].preco
     })
 
-    carrinho.value.total =
-      carrinho.value.total +
-      produtos_bt.value[id - 1].preco * produtos_bt.value[id - 1].quantidade
+    calcularTotal()
   }
+}
+function resetar2(id) {
+if (produtos_bt.value[id - 1].quantidade > 0) {
+  produtos_bt.value[id - 1].quantidade = 0 }
 }
 const produtos_fran = ref([
   {
@@ -131,10 +135,12 @@ function adicionar3(id) {
       preco: produtos_fran.value[id - 1].quantidade * produtos_fran.value[id - 1].preco
     })
 
-    carrinho.value.total =
-      carrinho.value.total +
-      produtos_fran.value[id - 1].preco * produtos_fran.value[id - 1].quantidade
+    calcularTotal()
   }
+}
+function resetar3(id) {
+  if (produtos_fran.value[id - 1].quantidade > 0) {
+    produtos_fran.value[id - 1].quantidade = 0 }
 }
 const produtos_bocaRosa = ref([
   {
@@ -169,6 +175,14 @@ function decrementar4(id) {
   }
 }
 
+
+function calcularTotal() {
+  carrinho.value.total = 0.00;
+  for (let item of carrinho.value.itens) {
+    carrinho.value.total += item.quantidade * item.preco;
+  }
+}
+
 function adicionar4(id) {
   if (produtos_bocaRosa.value[id - 1].quantidade > 0) {
     carrinho.value.itens.push({
@@ -176,24 +190,36 @@ function adicionar4(id) {
       preco: produtos_bocaRosa.value[id - 1].quantidade * produtos_bocaRosa.value[id - 1].preco
     })
 
-    carrinho.value.total =
-      carrinho.value.total +
-      produtos_bocaRosa.value[id - 1].preco * produtos_bocaRosa.value[id - 1].quantidade
+    calcularTotal()
   }
+}
+function resetar4(id) {
+  if (produtos_bocaRosa.value[id - 1].quantidade > 0) {
+    produtos_bocaRosa.value[id - 1].quantidade = 0 }
 }
 const carrinho = ref({
   itens: [],
   total: 0
 })
 
+const mostrar = ref(false)
+
+function remover(id){
+  let item = carrinho.value.itens.findIndex(item => item > id);
+  carrinho.value.itens.splice(item, 1);
+  calcularTotal()
+}
+
 </script>
 
 <template>
   <div id="loja-completa">
     <h1>Mendes MakeUp</h1>
+    
     <div>
-      <a href="#carrinho"><button class="btn-carrinho">Carrinho 🛒</button></a>
+      <button class="btn-carrinho"  @click="mostrar = true"><a href="#carrinho">Carrinho 🛒</a></button>
     </div>
+    <hr>
     <div id="produtos">
       <div id="produtos-Mari">
         <h2>Marimaria MakeUp</h2>
@@ -204,7 +230,7 @@ const carrinho = ref({
             <div class="informacoes">
               <h3>R${{ produto.preco.toFixed(2) }}</h3>
               <button class="btn-adicionar" @click="incrementar1(produto.id)">+</button>
-              <img src="lixeira.png" alt="" width="25" class="btn-deletar" @click="resetar" />
+              <img src="https://cdn-icons-png.flaticon.com/256/3299/3299937.png" alt="" width="25" class="btn-deletar" @click="resetar1(produto.id)" />
               <button class="btn-decrmentar" @click="decrementar1(produto.id)">-</button>
               <p>Quantidade de produto(s): {{ produto.quantidade }}</p>
               <button class="btn-adicionar" @click="adicionar1(produto.id)">Adicionar ao Carrinho</button>
@@ -222,7 +248,7 @@ const carrinho = ref({
             <div class="informacoes">
               <h3>R${{ produto.preco.toFixed(2) }}</h3>
               <button class="btn-adicionar" @click="incrementar2(produto.id)">+</button>
-              <img src="lixeira.png" alt="" width="25" class="btn-deletar" @click="resetar" />
+              <img src="https://cdn-icons-png.flaticon.com/256/3299/3299937.png" alt="" width="25" class="btn-deletar" @click="resetar2(produto.id)" />
               <button class="btn-decrmentar" @click="decrementar2(produto.id)">-</button>
               <p>Quantidade de produto(s): {{ produto.quantidade }}</p>
               <button class="btn-adicionar" @click="adicionar2(produto.id)">Adicionar ao Carrinho</button>
@@ -240,7 +266,7 @@ const carrinho = ref({
             <div class="informacoes">
               <h3>R${{ produto.preco.toFixed(2) }}</h3>
               <button class="btn-adicionar" @click="incrementar3(produto.id)">+</button>
-              <img src="lixeira.png" alt="" width="25" class="btn-deletar" @click="resetar" />
+              <img src="https://cdn-icons-png.flaticon.com/256/3299/3299937.png" alt="" width="25" class="btn-deletar" @click="resetar3(produto.id)" />
               <button class="btn-decrmentar" @click="decrementar3(produto.id)">-</button>
               <p>Quantidade de produto(s): {{ produto.quantidade }}</p>
               <button class="btn-adicionar" @click="adicionar3(produto.id)">Adicionar ao Carrinho</button>
@@ -258,7 +284,7 @@ const carrinho = ref({
             <div class="informacoes">
               <h3>R${{ produto.preco.toFixed(2) }}</h3>
               <button class="btn-adicionar" @click="incrementar4(produto.id)">+</button>
-              <img src="lixeira.png" alt="" width="25" class="btn-deletar" @click="resetar" />
+              <img src="https://cdn-icons-png.flaticon.com/256/3299/3299937.png" alt="" width="25" class="btn-deletar" @click="resetar4(produto.id)" />
               <button class="btn-decrmentar" @click="decrementar4(produto.id)">-</button>
               <p>Quantidade de produto(s): {{ produto.quantidade }}</p>
               <button class="btn-adicionar" @click="adicionar4(produto.id)">Adicionar ao Carrinho</button>
@@ -268,11 +294,19 @@ const carrinho = ref({
       </div>
       <hr>
     </div>
-    <div id="carrinho">
-     <h2>Carrinho de Compras 🛍️</h2>
 
-    </div>
+    <div id="carrinho" v-if="mostrar">
+     <h2>Carrinho de Compras 🛍️</h2>
+     <button @click="mostrar = false" class="btn-ocultar">Ocultar</button>
+     <div id="item-carrinho" v-for="produto in carrinho.itens" :key="produto.id">
+      <p>Item: {{ produto.nome }}</p>
+      <p>Preco: {{ produto.preco.toFixed(2) }}</p>
+      <p>Quantidade: {{ produto.quantidade }}</p>
+      <div class="botao"><button @click="remover(produto.id)">Remover</button>
+    </div></div>
+    <p class="total">Total: R${{ carrinho.total.toFixed(2) }}</p>
   </div>
+    </div>
 </template>
 
 <style scoped>
@@ -293,6 +327,7 @@ h1 {
   font-family: 'URW Chancery L, cursive';
   color: rgb(255, 255, 255);
   text-shadow: 5px 5px 5px rgb(73, 6, 37);
+  font-size: 50px;
 }
 h2 {
   text-align: left;
@@ -300,7 +335,6 @@ h2 {
   margin: 5px;
 }
 p {
-  text-align: center;
   color: rgb(97, 4, 40);
 }
 img {
@@ -350,5 +384,20 @@ hr {
 #carrinho>h2{
   color: white;
  text-decoration: underline;
+}
+#carrinho{
+  text-align: left;
+  font-size: 20px;
+}
+.total{
+  border-radius: 10px;
+  font-size: 25px;
+  text-decoration: underline white;
+}
+.btn-ocultar{
+  font-size: 15px;
+}
+a{
+  color: white;
 }
 </style>
